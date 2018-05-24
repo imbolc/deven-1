@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, abort, send_file
+from flask import Flask, request, jsonify, abort, send_file, render_template
 from bson import ObjectId
 from flask_swagger_ui import get_swaggerui_blueprint
 
@@ -13,8 +13,13 @@ app.json_encoder = JSONEncoder
 
 # Setup swagger UI
 app.register_blueprint(get_swaggerui_blueprint(
-    '', '/swagger.json',
-), url_prefix='')
+    '/apidocs', '/swagger.json',
+), url_prefix='/apidocs')
+
+
+@app.route('/')
+def home():
+    return send_file('frontend.html')
 
 
 @app.route('/level3', methods=['GET', 'POST', 'DELETE'])

@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="https://unpkg.com/picnic">
+<div id="app" style="display:none" v-show="true">
+    <h2>Level 3</h2>
+    <table>
+        <tr v-for="o in level3">
+            <td>
+                <a href="" @click.prevent="loadLevel4(o._id)">{{o.TEST_HYPERLINK}}</a>
+            </td>
+            <td>{{o.SUITE}}</td>
+            <td>{{o.TESTID}}</td>
+            <td>{{o.DQ_DIMENSION}}</td>
+        </tr>
+    </table>
+    <h2 v-if="level4.length">Level 4</h2>
+    <table>
+        <tr v-for="o in level4">
+            <td>{{o.OBJECTID}}</td>
+            <td>{{o.GLOBALID}}</td>
+            <td>{{o.DATECREATED}}</td>
+            <td>{{o.STATUS}}</td>
+        </tr>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            level3: [],
+            level4: [],
+        },
+        created: function () {
+            var vm = this
+            fetch('/level3')
+                .then(function (r) { return r.json() })
+                .then(function (data) {
+                    vm.level3 = data
+                })
+        },
+        methods: {
+            loadLevel4: function (id) {
+                var vm = this
+                vm.level4 = []
+                fetch('/level3/' + id)
+                    .then(function (r) { return r.json() })
+                    .then(function (data) {
+                        vm.level4 = data.level4
+                    })
+            }
+        }
+    })
+</script>

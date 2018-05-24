@@ -10,3 +10,5 @@ Fill with test data:
 - put data files like ones you gave me into `./data` folder
 - run server: `./app.py`
 - run `./fill_test_data.py`
+
+Swagger UI: `/apidocs`
