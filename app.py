@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, send_file
 from bson import ObjectId
-# from flask_swagger_ui import get_swaggerui_blueprint
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from db import db, JSONEncoder
 import utils
@@ -11,10 +11,10 @@ app.config.from_object('settings')
 # Enhance jsonify to be able to work with ObjectId
 app.json_encoder = JSONEncoder
 
-# app.register_blueprint(get_swaggerui_blueprint(
-#     app.config['SWAGGER_UI_PREFIX'], '/api-docs',
-#     config=app.config['SWAGGER_UI_CONFIG']
-# ), url_prefix=app.config['SWAGGER_UI_PREFIX'])
+# Setup swagger UI
+app.register_blueprint(get_swaggerui_blueprint(
+    '', '/swagger.json',
+), url_prefix='')
 
 
 @app.route('/level3', methods=['GET', 'POST', 'DELETE'])
@@ -55,6 +55,11 @@ def level3_item(id):
     if not doc:
         abort(404)
     return jsonify(doc)
+
+
+@app.route('/swagger.json')
+def swagger_json():
+    return send_file('./swagger.json')
 
 
 if __name__ == '__main__':
