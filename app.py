@@ -30,7 +30,7 @@ def level3():
         r = db.level3.delete_many({})
         return jsonify({'deleted': r.deleted_count})
     # Get all the level3 docs
-    return jsonify(list(db.level3.find()))
+    return jsonify(list(db.level3.find({}, {'level4': 0})))
 
 
 @app.route('/level3/last')
